@@ -2,436 +2,274 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTFOLIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Portfolio | Project Phoenix</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Space Mono font for the classic terminal look -->
+    <!-- Load Space Mono font (from index.html) -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Enable smooth scrolling for anchor links */
+        /* All styles copied directly from your index.html for 100% consistency */
         html {
             scroll-behavior: smooth;
         }
 
-        /* Configure Tailwind to use the Space Mono font when available */
         :root {
             --font-mono: 'Space Mono', monospace;
-            /* Default theme is now Amber */
-            --main-color: #ffb861; 
+            --main-color: #ffb861; /* Amber/Orange Default */
             --info-color: #f7a049;
             --success-color: #00ff41;
             --error-color: #ff6347;
             --prompt-color: #93d6e5;
-            --bg-color: #0d0101;
         }
 
-        /* Custom CSS for the Terminal Interface (Hacker Aesthetic) */
         .terminal-theme {
-            background-color: var(--bg-color); /* Very dark red/black background */
+            background-color: #0d0101; /* Very dark red/black background */
             color: var(--main-color);
-            /* Initial text shadow based on Amber default theme */
-            text-shadow: 0 0 5px #ffb861a8; 
             font-family: var(--font-mono);
+            /* CRT Glow Effect */
+            text-shadow: 0 0 7px rgba(255, 184, 97, 0.7); /* Soft amber glow */
+            /* Scanline Effect */
+            background-image: linear-gradient(
+                rgba(0, 0, 0, 0.2) 2px,
+                transparent 2px
+            );
+            background-size: 100% 4px; /* Creates subtle horizontal lines */
+        }
+        
+        /* Navigation Links Styling (from index.html) */
+        .nav-link {
+            color: var(--main-color);
+            text-shadow: 0 0 5px rgba(255, 184, 97, 0.5);
+            transition: color 0.3s, text-shadow 0.3s;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 700;
+        }
+        .nav-link:hover {
+            color: var(--prompt-color);
+            text-shadow: 0 0 10px var(--prompt-color);
+            background-color: rgba(255, 184, 97, 0.1);
+        }
+        
+        /* New styles for the portfolio dropdown */
+        .project-title {
+            color: var(--prompt-color);
+            cursor: pointer;
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .project-title:hover {
+            color: #c1eef9; /* Lighter prompt color */
+        }
+        
+        .project-path {
+            color: var(--info-color);
+        }
+        
+        /* Project Output (The dropdown content) */
+        .project-output {
+            margin-top: 10px;
+            padding: 15px 15px 0 15px;
+            background-color: rgba(13, 1, 1, 0.5); /* Darker, slightly more opaque bg */
+            border-left: 3px solid var(--success-color);
+            border-top: 1px dashed var(--main-color);
+            border-radius: 4px;
+            overflow: hidden; /* Keep hidden when not active */
+            max-height: 0;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e2e8f0; /* Use a clearer white for output text */
+            text-shadow: none; /* Remove glow from output block for readability */
+        }
+        .project-output.active {
+            max-height: 24rem; /* Set a fixed height (384px) */
+            overflow-y: auto; /* Add scrollbar if content overflows */
+            padding-bottom: 15px;
+            transition: max-height 0.6s ease-in, padding 0.6s ease-in;
+        }
+        .output-label {
+            color: var(--success-color);
+            font-weight: 700;
         }
 
-        .terminal-window {
-            border: 1px solid #1c1c1c;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            background: rgba(13, 1, 1, 0.95);
+        /* New styles for placeholders */
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: rgba(13, 1, 1, 0.8); /* Dark bg */
+            border: 2px dashed var(--info-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--info-color);
+            font-size: 0.9rem;
+            text-shadow: none;
         }
 
-        .window-header {
-            background-color: #1c1c1c;
-            border-bottom: 1px solid #333;
-            color: #ccc;
-        }
-
-        /* Custom scrollbar for terminal output */
-        .terminal-output::-webkit-scrollbar {
+        /* Custom scrollbar for project output */
+        .project-output::-webkit-scrollbar {
             width: 8px;
         }
-
-        .terminal-output::-webkit-scrollbar-thumb {
-            background-color: var(--main-color);
+        .project-output::-webkit-scrollbar-track {
+            background: rgba(13, 1, 1, 0.5); /* Match output bg */
             border-radius: 4px;
-            border: 1px solid var(--bg-color);
         }
-
-        .terminal-output::-webkit-scrollbar-track {
-            background: #1c1c1c;
-        }
-
-        .text-main { color: var(--main-color); }
-        .text-info { color: var(--info-color); }
-        .text-prompt { color: var(--prompt-color); }
-
-        /* Style the dropdown menu to match the theme */
-        #project-nav-select {
-            appearance: none; /* Hide default dropdown arrow */
-            background-color: #1c1c1c; /* Dark background */
-            color: var(--main-color);
-            border: 1px solid #333;
-            padding: 4px 8px;
-            font-size: 0.75rem; /* text-xs */
-            font-family: var(--font-mono);
-            cursor: pointer;
+        .project-output::-webkit-scrollbar-thumb {
+            background-color: var(--main-color); /* Amber scrollbar */
             border-radius: 4px;
-            min-width: 150px;
         }
-        
-        #project-nav-select:focus {
-            outline: none;
-            border-color: var(--main-color);
-            box-shadow: 0 0 5px rgba(255, 184, 97, 0.5);
+        .project-output::-webkit-scrollbar-thumb:hover {
+            background-color: var(--prompt-color); /* Cyan on hover */
         }
 
-        /* Utility for hiding elements until they are toggled */
-        .hidden {
-            display: none !important;
-        }
+        /* AI STYLES REMOVED */
+
     </style>
 </head>
-<body class="bg-gray-900 min-h-screen p-4 flex items-center justify-center terminal-theme">
 
-    <!-- Terminal Container -->
-    <div id="terminal-container" class="w-full h-full terminal-window rounded-lg flex flex-col max-w-6xl max-h-[95vh]">
-
-        <!-- Window Header (Title Bar) -->
-        <div id="window-header" class="window-header flex justify-between items-center px-4 py-2 font-bold text-sm select-none">
-            
-            <!-- Left Header Controls -->
-            <div class="flex items-center space-x-4">
-                <span class="text-prompt">[ silhouetto@portfolio:~ ]</span>
-                
-                <button id="reboot-btn" title="Reboot Terminal" class="text-xs text-red-500 hover:text-white transition duration-150">
-                    REBOOT
-                </button>
-                <button id="close-terminal-btn" title="Exit Application" class="text-xs text-red-500 hover:text-white transition duration-150">
-                    EXIT
-                </button>
-            </div>
-            
-            <!-- Right Header Controls (Including Dropdown) -->
-            <div class="flex space-x-4 items-center">
-                
-                <!-- Project Dropdown Menu -->
-                <select id="project-nav-select" title="Navigate Projects">
-                    <option value="about">:: ABOUT SILHOUETTO</option>
-                    <option value="project1">01_Backend_API_Relay</option>
-                    <option value="project2">02_Client_Side_Interface</option>
-                    <option value="project3">03_3D_Sim_Engine</option>
-                    <option value="project4">04_Data_Pipeline_Tool</option>
-                    <option value="project5">05_Automation_Script</option>
-                </select>
-
-                <!-- Settings Button -->
-                <button id="settings-toggle-btn" title="Terminal Settings" class="p-1 rounded-full text-gray-400 hover:text-main transition duration-150">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.837-3.133.64-1.961 2.042a1.54 1.54 0 01-.581 2.122c-1.41.944-1.41 3.336 0 4.28a1.54 1.54 0 01.581 2.122c-1.172 1.393.53 2.87 1.96 2.042a1.532 1.532 0 012.286.948c.379 1.56 2.6 1.56 2.981 0v.001c.456-1.579 1.914-1.579 2.37 0a1.534 1.534 0 012.286.948c1.372-.837 3.133.64 1.961 2.042a1.54 1.54 0 01.581 2.122c1.41.944 1.41-3.336 0-4.28a1.54 1.54 0 01-.581-2.122c1.172-1.393-.53-2.87-1.96-2.042a1.532 1.532 0 01-2.286-.948v-.001zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
-                </button>
-                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-            </div>
+<!-- Body styles from index.html -->
+<body class="bg-[#0d0101] text-[#ffb861] min-h-screen flex flex-col items-center p-4 font-mono">
+    
+    <!-- Simplified Header for Portfolio Page -->
+    <header class="fixed top-0 left-0 right-0 p-4 z-40 flex justify-between items-center">
+        <!-- Left Section: Back to Home Button -->
+        <div>
+            <!-- Make sure to replace 'index.html' with your actual domain if needed -->
+            <a href="index.html" class="nav-link uppercase text-sm font-bold">
+                &lt; // BACK_TO_HOME
+            </a>
         </div>
+        <!-- Right Section: Page Title -->
+        <nav class="space-x-4 text-sm font-bold">
+            <span class="nav-link text-[var(--prompt-color)]">PROJECT_CATALOG</span>
+        </nav>
+    </header>
 
-        <!-- Main Content Area: Single Viewer Panel -->
-        <div class="flex-1 overflow-hidden p-6">
+    <!-- Main Content -->
+    <main class="w-full mt-24"> <!-- Add margin-top to clear fixed header -->
+    
+        <!-- Portfolio Section (Styled like index.html sections) -->
+        <section id="portfolio" class="py-20 md:py-32 w-full max-w-4xl px-4 mx-auto terminal-theme">
             
-            <div id="viewer-panel" class="w-full h-full overflow-y-auto terminal-output text-sm whitespace-pre-wrap">
-                <!-- Content will be injected here by JavaScript -->
-                <p class="text-prompt mb-4">system@silhouetto:~$ cat /info/welcome.log</p>
-                <pre class="text-main leading-relaxed">
-<span class="text-info">    ___  ___      _   _   ___   _   _   ___  ___  
-    |  \/  |     | | | | | \ | | | | | |  \/  |  
-    | .  . | ___ | |_| | |  \| | | | | | .  . | ___  
-    | |\/| |/ _ \| __| | | . ` | | | | | |\/| |/ _ \ 
-    | |  | | (_) | |_| | | |\  | \ \_/ / |  | | (_) |
-    \_|  |_/\___/ \__|\_| \_| \_/  \___/\_|  |_/\___/ </span>
-
-Welcome to the Silhouetto Portfolio Viewer.
-
-<span class="text-info">[[ DIRECTORY LOAD SUCCESS ]]</span>
-
-Please use the project selector in the header bar to load portfolio details.
-</pre>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Settings Sidebar (Hidden by default) -->
-    <div id="settings-sidebar" class="fixed top-0 right-0 h-full w-64 bg-gray-800 p-4 transform translate-x-full transition-transform duration-300 z-50 shadow-2xl hidden">
-        <h2 class="text-xl font-bold text-main mb-4">Terminal Settings</h2>
-        <div class="space-y-4 text-sm">
+            <!-- Section Title (from index.html) -->
+            <h2 class="text-4xl font-bold mb-6 text-[var(--prompt-color)]">// PROJECT_CATALOG</h2>
             
-            <div>
-                <label for="theme-select" class="block text-gray-300 mb-1">Color Theme:</label>
-                <select id="theme-select" class="w-full p-2 rounded bg-gray-700 text-main border border-gray-600 focus:ring-main focus:border-main">
-                    <!-- Placeholder: No selection on initial load -->
-                    <option value="" class="bg-gray-700 text-gray-500" disabled selected>-- Select Theme --</option>
-                    <option value="amber" class="bg-gray-700 text-main">Amber (Orange)</option>
-                    <option value="matrix" class="bg-gray-700 text-green-500">Matrix (Green)</option>
-                    <option value="ocean" class="bg-gray-700 text-blue-400">Ocean (Blue)</option>
-                </select>
-            </div>
+            <p class="text-lg text-[var(--info-color)] mb-10">
+                // Manifest of high-autonomy, high-impact project specifications.
+                <br>
+                // Click any file to view execution details and outcomes.
+            </p>
             
-            <button id="save-settings-btn" class="w-full py-2 bg-main text-black font-bold rounded hover:bg-info transition duration-150">
-                Save Settings
-            </button>
-            <button id="close-settings-btn" class="w-full py-2 bg-gray-600 text-white rounded hover:bg-gray-500 transition duration-150">
-                Close
-            </button>
-        </div>
-    </div>
+            <!-- Project List -->
+            <ul class="list-none space-y-8" id="project-list">
+                    
+                <!-- Project 1: Roblox Economy System -->
+                <li class="project-item" data-project="P001">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P001')">[Insert Text]</span>
+                    <div class="project-output" id="output-P001">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
 
-    <!-- JavaScript for UI/Theming/Navigation -->
+                <!-- Project 2: Web Scraper Automation -->
+                <li class="project-item" data-project="P002">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P002')">[Insert Text]</span>
+                    <div class="project-output" id="output-P002">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+                <!-- Project 3: Unity Game Prototype -->
+                <li class="project-item" data-project="P003">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P003')">[Insert Text]</span>
+                    <div class="project-output" id="output-P003">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+                <!-- Project 4: Internal Tool -->
+                <li class="project-item" data-project="P004">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P004')">[Insert Text]</span>
+                    <div class="project-output" id="output-P004">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+            </ul>
+        </section>
+
+        <!-- AI Query Module Section REMOVED -->
+
+    </main>
+
     <script>
-        // --- DOM Elements ---
-        const settingsToggleBtn = document.getElementById('settings-toggle-btn');
-        const settingsSidebar = document.getElementById('settings-sidebar');
-        const closeSettingsBtn = document.getElementById('close-settings-btn');
-        const saveSettingsBtn = document.getElementById('save-settings-btn');
-        const themeSelect = document.getElementById('theme-select');
-        const rootElement = document.documentElement;
-        const projectNavSelect = document.getElementById('project-nav-select'); 
-        const viewerPanel = document.getElementById('viewer-panel');
-        const rebootBtn = document.getElementById('reboot-btn');
-        const closeTerminalBtn = document.getElementById('close-terminal-btn');
+        // Simple JavaScript for the dropdown/accordion functionality
+        function toggleProject(projectId) {
+            const output = document.getElementById(`output-${projectId}`);
+            const allOutputs = document.querySelectorAll('.project-output');
 
-        // --- Theme Data ---
-        const themes = {
-            amber: { '--main-color': '#ffb861', '--info-color': '#f7a049', '--prompt-color': '#93d6e5', '--bg-color': '#0d0101' },
-            matrix: { '--main-color': '#00ff41', '--info-color': '#00a334', '--prompt-color': '#70ff7a', '--bg-color': '#0a0a0a' },
-            ocean: { '--main-color': '#5cb3ff', '--info-color': '#478de0', '--prompt-color': '#33ccff', '--bg-color': '#010d18' }
-        };
+            // Check if the clicked one is already active
+            const isAlreadyActive = output.classList.contains('active');
 
-        // --- Core Functions ---
+            // Close all outputs
+            allOutputs.forEach(out => {
+                out.classList.remove('active');
+            });
 
-        function toggleSettingsSidebar(action) {
-            if (action === 'hide' || settingsSidebar.classList.contains('translate-x-0')) {
-                settingsSidebar.classList.remove('translate-x-0');
-                settingsSidebar.classList.add('translate-x-full');
-                // Use a short timeout to handle the hidden class after transition
-                setTimeout(() => settingsSidebar.classList.add('hidden'), 300);
-            } else {
-                settingsSidebar.classList.remove('hidden');
-                setTimeout(() => settingsSidebar.classList.remove('translate-x-full'), 10); // Start transition
-                settingsSidebar.classList.add('translate-x-0');
+            // If the clicked one was not active, open it
+            if (!isAlreadyActive) {
+                output.classList.add('active');
             }
         }
 
-        function applyTheme(themeName) {
-            const theme = themes[themeName];
-            if (theme) {
-                for (const [key, value] of Object.entries(theme)) {
-                    rootElement.style.setProperty(key, value);
-                }
-                // Also update the text shadow for the terminal window based on the new main color
-                const shadowColor = theme['--main-color'];
-                document.querySelector('.terminal-theme').style.textShadow = `0 0 5px ${shadowColor}a8`;
-                
-                localStorage.setItem('terminalTheme', themeName);
-            }
-        }
-
-        function loadSavedSettings() {
-            let savedTheme = localStorage.getItem('terminalTheme');
-            
-            // If no theme is saved or the saved theme is invalid, default to 'amber'
-            if (!savedTheme || !themes[savedTheme]) {
-                savedTheme = 'amber';
-                localStorage.setItem('terminalTheme', 'amber'); // Set persistent default
-            }
-
-            // Apply the theme and update the dropdown selection
-            themeSelect.value = savedTheme;
-            applyTheme(savedTheme);
-        }
-
-        function saveSettings() {
-            const selectedTheme = themeSelect.value;
-            if (selectedTheme) {
-                applyTheme(selectedTheme);
-                toggleSettingsSidebar('hide');
-            } else {
-                // If the placeholder is selected, it should default back to Amber
-                applyTheme('amber'); 
-                toggleSettingsSidebar('hide');
-            }
-        }
-
-        function runBootSequence() {
-            viewerPanel.innerHTML = `
-                <p class="text-prompt mb-4">system@silhouetto:~$ reboot --force</p>
-                <p class="text-info">Initiating system reboot sequence...</p>
-                <p class="text-info">Clearing cache and refreshing I/O channels...</p>
-                <p class="text-success mt-2 mb-4">System Online. Ready for file access.</p>
-            `;
-            // Immediately load the default 'about' content after simulated boot
-            setTimeout(() => {
-                loadProjectContent('about');
-                viewerPanel.scrollTop = viewerPanel.scrollHeight;
-            }, 1000);
-        }
-        
-        function hideTerminal() {
-            // Placeholder for hiding or navigating away
-            console.log("Terminal closing simulation.");
-            // Example: window.location.href = 'https://silhouetto.win';
-        }
-
-        // --- Portfolio Content Logic ---
-
-        const projectData = {
-            about: `
-<p class="text-prompt">user@silhouetto:~$ cat /profile/overview.txt</p>
-<div class="mt-4">
-    <p class="text-lg font-bold text-main">// PROFILE: SILHOUETTO</p>
-    <p class="text-xs text-info">// ROLE: Full-Stack Developer & Systems Engineer</p>
-    <br>
-    <p class="text-main leading-relaxed">
-        My focus is on creating secure, high-performance web applications and systems. I specialize in bridging complex backend logic with elegant, responsive frontend interfaces. My work emphasizes clean architecture, scalability, and automated testing.
-    </p>
-    <br>
-    <p class="text-info font-bold">CORE SKILLS ::</p>
-    <ul class="text-main list-disc list-inside ml-4">
-        <li>Backend: Node.js, Python, Serverless (Functions)</li>
-        <li>Frontend: React, Tailwind CSS, Vanilla JS (ES6+)</li>
-        <li>Database: Firestore, PostgreSQL, MongoDB</li>
-        <li>DevOps: Git, Docker, Cloud Platforms</li>
-    </ul>
-    <br>
-    <p class="text-info font-bold">CONTACT ::</p>
-    <p class="text-main ml-4">Email: contact@silhouetto.win</p>
-    <p class="text-main ml-4">GitHub: github.com/yourusername</p>
-</div>
-            `,
-            project1: `
-<p class="text-prompt">user@silhouetto:~$ cat /project/01_Backend_API_Relay.md</p>
-<p class="text-lg font-bold text-main mt-4">// PROJECT: Backend API Relay</p>
-<p class="text-xs text-info">// STATUS: Placeholder Slot - READY FOR CONTENT</p>
-<div class="mt-4 text-main leading-relaxed">
-    <p>This slot is reserved for a significant backend or API project.</p>
-    <br>
-    <p class="text-info font-bold">EXPECTED DETAILS:</p>
-    <ul class="list-disc list-inside ml-4">
-        <li><span class="text-prompt">Function:</span> Describe the core purpose (e.g., real-time data ingestion, microservice architecture).</li>
-        <li><span class="text-prompt">Technology Stack:</span> List specific backend languages, frameworks (Node/Express, Python/Django), and database systems used.</li>
-        <li><span class="text-prompt">Key Features:</span> Mention complex features like authentication, rate-limiting, or background job processing.</li>
-        <li><span class="text-prompt">Links:</span> [DEPLOYED_URL] | [GITHUB_SOURCE]</li>
-    </ul>
-    <br>
-    <p class="text-info">--- Waiting for documentation upload ---</p>
-</div>
-            `,
-            project2: `
-<p class="text-prompt">user@silhouetto:~$ cat /project/02_Client_Side_Interface.md</p>
-<p class="text-lg font-bold text-main mt-4">// PROJECT: Client Side Interface</p>
-<p class="text-xs text-info">// STATUS: Placeholder Slot - READY FOR CONTENT</p>
-<div class="mt-4 text-main leading-relaxed">
-    <p>This slot is reserved for a user-facing frontend application.</p>
-    <br>
-    <p class="text-info font-bold">EXPECTED DETAILS:</p>
-    <ul class="list-disc list-inside ml-4">
-        <li><span class="text-prompt">Function:</span> Describe the visual goal (e.g., complex dashboard, interactive map, responsive component library).</li>
-        <li><span class="text-prompt">Technology Stack:</span> List specific frontend frameworks (React, Angular, Vue), styling methods (Tailwind, SCSS), and state management tools.</li>
-        <li><span class="text-prompt">Key Features:</span> Highlight UI/UX decisions, performance optimizations, or unique interactive components.</li>
-        <li><span class="text-prompt">Links:</span> [DEPLOYED_URL] | [GITHUB_SOURCE]</li>
-    </ul>
-    <br>
-    <p class="text-info">--- Waiting for documentation upload ---</p>
-</div>
-            `,
-            project3: `
-<p class="text-prompt">user@silhouetto:~$ cat /project/03_3D_Sim_Engine.md</p>
-<p class="text-lg font-bold text-main mt-4">// PROJECT: 3D Sim Engine</p>
-<p class="text-xs text-info">// STATUS: Placeholder Slot - READY FOR CONTENT</p>
-<div class="mt-4 text-main leading-relaxed">
-    <p>This slot is reserved for a graphics, visualization, or game development project.</p>
-    <br>
-    <p class="text-info font-bold">EXPECTED DETAILS:</p>
-    <ul class="list-disc list-inside ml-4">
-        <li><span class="text-prompt">Function:</span> Describe what is being simulated or visualized (e.g., physics engine, complex data graph, game level).</li>
-        <li><span class="text-prompt">Technology Stack:</span> List tools like Three.js, D3, WebGL, or Canvas APIs.</li>
-        <li><span class="text-prompt">Key Features:</span> Focus on rendering techniques, performance metrics, or complex mathematical implementation.</li>
-        <li><span class="text-prompt">Links:</span> [DEPLOYED_URL] | [GITHUB_SOURCE]</li>
-    </ul>
-    <br>
-    <p class="text-info">--- Waiting for documentation upload ---</p>
-</div>
-            `,
-            project4: `
-<p class="text-prompt">user@silhouetto:~$ cat /project/04_Data_Pipeline_Tool.md</p>
-<p class="text-lg font-bold text-main mt-4">// PROJECT: Data Pipeline Tool</p>
-<p class="text-xs text-info">// STATUS: Placeholder Slot - READY FOR CONTENT</p>
-<div class="mt-4 text-main leading-relaxed">
-    <p>This slot is reserved for a data processing, ETL, or machine learning project.</p>
-    <br>
-    <p class="text-info font-bold">EXPECTED DETAILS:</p>
-    <ul class="list-disc list-inside ml-4">
-        <li><span class="text-prompt">Function:</span> Describe the data source, transformation, and destination.</li>
-        <li><span class="text-prompt">Technology Stack:</span> List tools like Python (Pandas/NumPy), SQL, or cloud-based data services.</li>
-        <li><span class="text-prompt">Key Features:</span> Detail the complexity of data cleaning, statistical analysis, or model training/deployment.</li>
-        <li><span class="text-prompt">Links:</span> [GITHUB_SOURCE]</li>
-    </ul>
-    <br>
-    <p class="text-info">--- Waiting for documentation upload ---</p>
-</div>
-            `,
-             project5: `
-<p class="text-prompt">user@silhouetto:~$ cat /project/05_Automation_Script.md</p>
-<p class="text-lg font-bold text-main mt-4">// PROJECT: Automation Script</p>
-<p class="text-xs text-info">// STATUS: Placeholder Slot - READY FOR CONTENT</p>
-<div class="mt-4 text-main leading-relaxed">
-    <p>This slot is reserved for a utility, tooling, or automation script project.</p>
-    <br>
-    <p class="text-info font-bold">EXPECTED DETAILS:</p>
-    <ul class="list-disc list-inside ml-4">
-        <li><span class="text-prompt">Function:</span> Describe the automated task (e.g., web scraping, CI/CD pipeline enhancer, desktop utility).</li>
-        <li><span class="text-prompt">Technology Stack:</span> List languages (Bash, PowerShell, Python), and relevant libraries or APIs.</li>
-        <li><span class="text-prompt">Key Features:</span> Highlight efficiency gains, scheduled execution, or system integration points.</li>
-        <li><span class="text-prompt">Links:</span> [GITHUB_SOURCE]</li>
-    </ul>
-    <br>
-    <p class="text-info">--- Waiting for documentation upload ---</p>
-</div>
-            `
-        };
-
-        function loadProjectContent(projectId) {
-            const content = projectData[projectId];
-            if (content) {
-                viewerPanel.innerHTML = content;
-            } else {
-                viewerPanel.innerHTML = '<p class="text-error">Error: Project documentation not found. Access denied or file corrupt.</p>';
-            }
-            viewerPanel.scrollTop = 0; // Scroll to top on content change
-        }
-
-        // --- Initialization ---
-
-        // Attach event listeners for settings
-        settingsToggleBtn.addEventListener('click', toggleSettingsSidebar);
-        closeSettingsBtn.addEventListener('click', () => toggleSettingsSidebar('hide'));
-        saveSettingsBtn.addEventListener('click', saveSettings);
-        
-        // Attach event listeners for main controls
-        rebootBtn.addEventListener('click', runBootSequence);
-        closeTerminalBtn.addEventListener('click', hideTerminal);
-
-        // Attach event listener for the new project dropdown
-        projectNavSelect.addEventListener('change', (e) => {
-            const projectId = e.target.value;
-            loadProjectContent(projectId);
-        });
-
-        // Load settings and initial content on load
-        window.onload = function () {
-            loadSavedSettings();
-            // Load the 'about' section as the default view
-            loadProjectContent(projectNavSelect.value); 
-        };
+        // --- Gemini AI Module REMOVED ---
 
     </script>
 
