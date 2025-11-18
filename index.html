@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Portfolio | Project Phoenix</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Space Mono font (from index.html) -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* All styles copied directly from your index.html for 100% consistency */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --font-mono: 'Space Mono', monospace;
+            --main-color: #ffb861; /* Amber/Orange Default */
+            --info-color: #f7a049;
+            --success-color: #00ff41;
+            --error-color: #ff6347;
+            --prompt-color: #93d6e5;
+        }
+
+        .terminal-theme {
+            background-color: #0d0101; /* Very dark red/black background */
+            color: var(--main-color);
+            font-family: var(--font-mono);
+            /* CRT Glow Effect */
+            text-shadow: 0 0 7px rgba(255, 184, 97, 0.7); /* Soft amber glow */
+            /* Scanline Effect */
+            background-image: linear-gradient(
+                rgba(0, 0, 0, 0.2) 2px,
+                transparent 2px
+            );
+            background-size: 100% 4px; /* Creates subtle horizontal lines */
+        }
+        
+        /* Navigation Links Styling (from index.html) */
+        .nav-link {
+            color: var(--main-color);
+            text-shadow: 0 0 5px rgba(255, 184, 97, 0.5);
+            transition: color 0.3s, text-shadow 0.3s;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 700;
+        }
+        .nav-link:hover {
+            color: var(--prompt-color);
+            text-shadow: 0 0 10px var(--prompt-color);
+            background-color: rgba(255, 184, 97, 0.1);
+        }
+        
+        /* New styles for the portfolio dropdown */
+        .project-title {
+            color: var(--prompt-color);
+            cursor: pointer;
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .project-title:hover {
+            color: #c1eef9; /* Lighter prompt color */
+        }
+        
+        .project-path {
+            color: var(--info-color);
+        }
+        
+        /* Project Output (The dropdown content) */
+        .project-output {
+            margin-top: 10px;
+            padding: 15px 15px 0 15px;
+            background-color: rgba(13, 1, 1, 0.5); /* Darker, slightly more opaque bg */
+            border-left: 3px solid var(--success-color);
+            border-top: 1px dashed var(--main-color);
+            border-radius: 4px;
+            overflow: hidden; /* Keep hidden when not active */
+            max-height: 0;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e2e8f0; /* Use a clearer white for output text */
+            text-shadow: none; /* Remove glow from output block for readability */
+        }
+        .project-output.active {
+            max-height: 24rem; /* Set a fixed height (384px) */
+            overflow-y: auto; /* Add scrollbar if content overflows */
+            padding-bottom: 15px;
+            transition: max-height 0.6s ease-in, padding 0.6s ease-in;
+        }
+        .output-label {
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        /* New styles for placeholders */
+        .video-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: rgba(13, 1, 1, 0.8); /* Dark bg */
+            border: 2px dashed var(--info-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--info-color);
+            font-size: 0.9rem;
+            text-shadow: none;
+        }
+
+        /* Custom scrollbar for project output */
+        .project-output::-webkit-scrollbar {
+            width: 8px;
+        }
+        .project-output::-webkit-scrollbar-track {
+            background: rgba(13, 1, 1, 0.5); /* Match output bg */
+            border-radius: 4px;
+        }
+        .project-output::-webkit-scrollbar-thumb {
+            background-color: var(--main-color); /* Amber scrollbar */
+            border-radius: 4px;
+        }
+        .project-output::-webkit-scrollbar-thumb:hover {
+            background-color: var(--prompt-color); /* Cyan on hover */
+        }
+
+        /* AI STYLES REMOVED */
+
+    </style>
+</head>
+
+<!-- Body styles from index.html -->
+<body class="bg-[#0d0101] text-[#ffb861] min-h-screen flex flex-col items-center p-4 font-mono">
+    
+    <!-- Simplified Header for Portfolio Page -->
+    <header class="fixed top-0 left-0 right-0 p-4 z-40 flex justify-between items-center">
+        <!-- Left Section: Back to Home Button -->
+        <div>
+            <!-- Make sure to replace 'index.html' with your actual domain if needed -->
+            <a href="index.html" class="nav-link uppercase text-sm font-bold">
+                &lt; // BACK_TO_HOME
+            </a>
+        </div>
+        <!-- Right Section: Page Title -->
+        <nav class="space-x-4 text-sm font-bold">
+            <span class="nav-link text-[var(--prompt-color)]">PROJECT_CATALOG</span>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="w-full mt-24"> <!-- Add margin-top to clear fixed header -->
+    
+        <!-- Portfolio Section (Styled like index.html sections) -->
+        <section id="portfolio" class="py-20 md:py-32 w-full max-w-4xl px-4 mx-auto terminal-theme">
+            
+            <!-- Section Title (from index.html) -->
+            <h2 class="text-4xl font-bold mb-6 text-[var(--prompt-color)]">// PROJECT_CATALOG</h2>
+            
+            <p class="text-lg text-[var(--info-color)] mb-10">
+                // Manifest of high-autonomy, high-impact project specifications.
+                <br>
+                // Click any file to view execution details and outcomes.
+            </p>
+            
+            <!-- Project List -->
+            <ul class="list-none space-y-8" id="project-list">
+                    
+                <!-- Project 1: Roblox Economy System -->
+                <li class="project-item" data-project="P001">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P001')">[Insert Text]</span>
+                    <div class="project-output" id="output-P001">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+                <!-- Project 2: Web Scraper Automation -->
+                <li class="project-item" data-project="P002">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P002')">[Insert Text]</span>
+                    <div class="project-output" id="output-P002">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+                <!-- Project 3: Unity Game Prototype -->
+                <li class="project-item" data-project="P003">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P003')">[Insert Text]</span>
+                    <div class="project-output" id="output-P003">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+                <!-- Project 4: Internal Tool -->
+                <li class="project-item" data-project="P004">
+                    <span class="project-path">./[Insert Text]/</span>
+                    <span class="project-title" onclick="toggleProject('P004')">[Insert Text]</span>
+                    <div class="project-output" id="output-P004">
+                        <!-- Video Placeholder -->
+                        <div class="video-placeholder">
+                            [ Video demonstration coming soon ]
+                        </div>
+                        
+                        <!-- Project Overview -->
+                        <p class="mt-4"><span class="output-label">PROJECT_OVERVIEW:</span></p>
+                        <p class="text-white">[ Insert project overview text here. ]</p>
+                        
+                        <p class="mt-4"><span class="output-label">TECHNOLOGIES_USED:</span></p>
+                        <p class="text-white">[ Insert technologies used text here. ]</p>
+                    </div>
+                </li>
+
+            </ul>
+        </section>
+
+        <!-- AI Query Module Section REMOVED -->
+
+    </main>
+
+    <script>
+        // Simple JavaScript for the dropdown/accordion functionality
+        function toggleProject(projectId) {
+            const output = document.getElementById(`output-${projectId}`);
+            const allOutputs = document.querySelectorAll('.project-output');
+
+            // Check if the clicked one is already active
+            const isAlreadyActive = output.classList.contains('active');
+
+            // Close all outputs
+            allOutputs.forEach(out => {
+                out.classList.remove('active');
+            });
+
+            // If the clicked one was not active, open it
+            if (!isAlreadyActive) {
+                output.classList.add('active');
+            }
+        }
+
+        // --- Gemini AI Module REMOVED ---
+
+    </script>
+
+</body>
+</html>
